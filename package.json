@@ -1,0 +1,46 @@
+{
+  "name": "sysinfoapp",
+  "version": "1.2.0",
+  "description": "System Info App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "NRP",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^5.0.1",
+    "electron-builder": "^20.15.1"
+  },
+  "optionalDependencies": {},
+  "dependencies": {
+    "systeminformation": "^4.3.0"
+  },
+  "build": {
+    "productName": "System Info v1.2",
+    "appId": "com.SysInfoApp.app",
+    "win": {
+      "asar": true,
+      "icon": "icons/sysinfo.ico",
+      "target": [
+        "portable"
+      ]
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "package.json",
+      "icons/*",
+      "node_modules"
+    ],
+    "portable": {
+      "artifactName": "SysInfoApp.exe"
+    },
+    "directories": {
+      "output": "build"
+    }
+  }
+}

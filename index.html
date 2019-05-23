@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Sysinfo App</title>
+  <script>
+    delete window.module;
+  </script>
+  <script type="application/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="https://bootswatch.com/4/slate/bootstrap.min.css">
+  <style>
+  table {
+    border: 1px solid black;
+  }
+  .table thead th {
+      vertical-align: bottom;
+      border-bottom: 1px solid rgba(0,0,0,0.6);
+  }
+  td {
+    font-size: 12px;
+  }
+  .jumbotron {
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0px -40px 0px -40px;
+  }
+  .container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-right: 20px;
+  }
+  .thfont {
+    font-size: 12px;
+  }
+  .tha {
+    padding-left: 20px;
+  }
+  .thb {
+    float: right;
+    margin-bottom: -1px;
+    margin-top: -1px;
+  }
+  .widtha {
+    width: 88%;
+  }
+  .progress {
+    position: relative;
+    border: 1px solid rgba(140, 140, 140, 1);
+  }
+  .progress span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: #aaa;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Motherboard</th>
+            <th scope="col">Model</th>
+          </tr>
+        </thead>
+        <tbody id="mobo">
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">CPU</th>
+            <th scope="col" id="load" class="thfont tha"></th>
+            <th scope="col">Speed</th>
+            <th scope="col">Cores</th>
+            <th scope="col">Threads</th>
+            <th scope="col">Socket</th>
+          </tr>
+        </thead>
+        <tbody id="cpu">
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 22%;">Memory</th>
+            <th scope="col" id="mem" class="thfont thb"></th>
+            <th scope="col">Channel</th>
+            <th scope="col">Size</th>
+            <th scope="col">Speed</th>
+          </tr>
+        </thead>
+        <tbody id="ram">
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">HDD</th>
+            <th scope="col">Type</th>
+            <th scope="col">Interface</th>
+          </tr>
+        </thead>
+        <tbody id="hdd">
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">HDD Volume</th>
+            <th scope="col">Size</th>
+            <th scope="col">Used</th>
+          </tr>
+        </thead>
+        <tbody id="hddfs">
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Network</th>
+            <th scope="col">Received</th>
+            <th scope="col">Received Sec</th>
+            <th scope="col">Sent</th>
+            <th scope="col">Sent Sec</th>
+            <th scope="col">latency</th>
+          </tr>
+        </thead>
+        <tbody id="nic">
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">GPU</th>
+            <th scope="col">Bus Type</th>
+          </tr>
+        </thead>
+        <tbody id="gpu">
+        </tbody>
+      </table>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Display</th>
+            <th scope="col">Resolution</th>
+          </tr>
+        </thead>
+        <tbody id="dis">
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+<script type="application/javascript">
+const si = require('systeminformation');
+
+// Mobo Info
+si.getAllData().then(data => {
+  // Motherboard
+  var trMOBO = '';
+  trMOBO += `
+  <tr class="table-active">
+    <td><b>${data.baseboard.manufacturer}</b></td>
+    <td><b>${data.baseboard.model}</b></td>
+  </tr>`;
+  // CPU Info
+  var trCPU = '';
+  trCPU += `
+  <tr class="table-active">
+    <td><b>${data.cpu.brand}</b></td>
+    <td></td>
+    <td><b>${data.cpu.speed}GHz</b></td>
+    <td><b>${data.cpu.physicalCores}</b></td>
+    <td><b>${data.cpu.cores}</b></td>
+    <td><b>${data.cpu.socket}</b></td>
+  </tr>`;
+  // RAM Info
+  var trRAM = '';
+  jQuery.each(data.memLayout, function(k, item) {
+    trRAM += `
+    <tr class="table-active">
+      <td><b>${item.partNum}</b></td>
+      <td></td>
+      <td><b>${item.bank}</b></td>
+      <td><b>${item.size / Math.pow(1024, 3)}GB</b></td>
+      <td><b>${item.clockSpeed * 2}MHz</b></td>
+    </tr>`;
+  });
+  // HDD Info
+  var trHDD = '';
+  data.diskLayout.sort(function(a, b) {
+    var x = a.interfaceType;
+    var y = b.interfaceType;
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+  jQuery.each(data.diskLayout, function(k, item) {
+    trHDD += `
+    <tr class="table-active">
+      <td><b>${item.name}</b></td>
+      <td><b>${item.type}</b></td>
+      <td><b>${item.interfaceType}</b></td>
+    </tr>`;
+  });
+  // HDD Use
+  var trHDDFS = '';
+  jQuery.each(data.fsSize, function(k, item) {
+    function hddUnits(args){
+      if (args == 0) {
+        result = 0;
+        unit = '';
+      }
+      if(args !== 0 && args < 1024) {
+        result = args;
+        unit = '';
+      }
+      if(args >= 1024 && args < Math.pow(1024, 2)) {
+        result = args / 1024;
+        unit = 'KB';
+      }
+      if(args >= Math.pow(1024, 2) && args < Math.pow(1024, 3)) {
+        result = args / Math.pow(1024, 2);
+        unit = 'MB';
+      }
+      if(args >= Math.pow(1024, 3) && args < Math.pow(1024, 4)) {
+        result = args / Math.pow(1024, 3);
+        unit = 'GB';
+      }
+      if(args >= Math.pow(1024, 4) && args < Math.pow(1024, 5)) {
+        result = args / Math.pow(1024, 4);
+        unit = 'TB';
+      }
+      return result.toFixed(2) + unit;
+    }
+    trHDDFS += `
+    <tr class="table-active">
+      <td><b>${item.fs}</b></td>
+      <td><b>${hddUnits(item.size)}</b></td>
+      <td><b>${hddUnits(item.used)}  (${(item.use).toFixed(1)}%)</b></td>
+    </tr>`;
+  });
+  // GPU Info
+  var trGPU = '';
+  jQuery.each(data.graphics.controllers, function(k, item) {
+    trGPU += `
+    <tr class="table-active">
+      <td><b>${item.model}</b></td>
+      <td><b>${item.bus}e</b></td>
+    </tr>`;
+  });
+  // Display Info
+  var trDIS = '';
+  jQuery.each(data.graphics.displays, function(k, item) {
+    trDIS += `
+    <tr class="table-active">
+      <td><b>${item.model}</b></td>
+      <td><b>${item.resolutionx + "x" + item.resolutiony + "@" + item.pixeldepth}</b></td>
+    </tr>`;
+  });
+  jQuery('#mobo').append(trMOBO);
+  jQuery('#cpu').append(trCPU);
+  jQuery('#ram').append(trRAM);
+  jQuery('#hdd').append(trHDD);
+  jQuery('#hddfs').append(trHDDFS);
+  jQuery('#gpu').append(trGPU);
+  jQuery('#dis').append(trDIS);
+}).catch(error => alert(error));
+
+// CPU Load
+var refreshLoad = setInterval(() => {
+  si.currentLoad().then(data => {
+    var trLOAD = '';
+    trLOAD += `
+    Idle: ${data.currentload_idle.toFixed(0)}%
+    Avg Load: ${data.avgload.toFixed(0)}%
+    <div class="progress widtha">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="${data.currentload.toFixed(0)}" aria-valuemin="0" aria-valuemax="100" style="width: ${data.currentload.toFixed(0)}%">
+        <span>Current Load: ${data.currentload.toFixed(0)}%</span>
+      </div>
+    </div>`;
+    jQuery('#load').empty();
+    jQuery('#load').append(trLOAD);
+  }).catch(error => alert(error));
+}, 1000);
+
+// Ram Usage
+var refreshMem = setInterval(() => {
+  si.mem().then(data => {
+    var trMEM = '';
+    trMEM += `
+    Ram Used: ${(data.used / Math.pow(1024, 3)).toFixed(0)}GB
+    Total: ${Math.round(data.total / Math.pow(1024, 3))}GB
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="${(data.used / Math.pow(1024, 3)).toFixed(0)}" aria-valuemin="0" aria-valuemax="100" style="width: ${(data.used / Math.pow(1024, 3)).toFixed(0)}%;">
+        <span>Used: ${(data.used / Math.pow(1024, 3) / Math.round(data.total / Math.pow(1024, 3)) * 100).toFixed(0)}%</span>
+      </div>
+    </div>`;
+    jQuery('#mem').empty();
+    jQuery('#mem').append(trMEM);
+  }).catch(error => alert(error));
+}, 1000);
+
+// Network Info
+var refreshNet = setInterval(() => {
+  si.networkStats().then(data => {
+    si.inetLatency().then(latency => {
+      var trNIC = '';
+      function netUnits(args){
+        if (args == 0) {
+          result = 0;
+          unit = 'b';
+        }
+        if(args !== 0 && args < 1024) {
+          result = args;
+          unit = 'Kb';
+        }
+        if(args >= 1024 && args < Math.pow(1024, 2)) {
+          result = args / 1024;
+          unit = 'KB';
+        }
+        if(args >= Math.pow(1024, 2) && args < Math.pow(1024, 3)) {
+          result = args / Math.pow(1024, 2);
+          unit = 'MB';
+        }
+        if(args >= Math.pow(1024, 3) && args < Math.pow(1024, 4)) {
+          result = args / Math.pow(1024, 3);
+          unit = 'GB';
+        }
+        if(args >= Math.pow(1024, 4) && args < Math.pow(1024, 5)) {
+          result = args / Math.pow(1024, 4);
+          unit = 'TB';
+        }
+        return result.toFixed(2) + unit;
+      }
+      jQuery.each(data, function(k, item) {
+        trNIC += `
+        <tr class="table-active">
+          <td><b>${item.iface}</b></td>
+          <td><b>${netUnits(item.rx_bytes)}</b></td>
+          <td><b>${netUnits(item.rx_sec)}</b></td>
+          <td><b>${netUnits(item.tx_bytes)}</b></td>
+          <td><b>${netUnits(item.tx_sec)}</b></td>
+          <td><b>${latency} (ms)</b></td>
+        </tr>`;
+      });
+      jQuery('#nic').empty();
+      jQuery('#nic').append(trNIC);
+    })
+  }).catch(error => alert(error));
+}, 1000);
+</script>
+</html>
