@@ -1,4 +1,5 @@
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, BrowserWindow, Menu, globalShortcut} = require('electron');
+const os = require('os');
 const path = require('path');
 const url = require('url');
 const si = require('systeminformation');
@@ -17,10 +18,21 @@ function createWindow() {
 
   win.loadFile('index.html');
 
-  //win.webContents.openDevTools();
+  let platform = os.platform()
+  if (platform === 'darwin') {
+    globalShortcut.register('Command+Option+I', () => {
+      win.webContents.toggleDevTools({mode: 'bottom'});
+    });
+  } else
+  if (platform === 'linux' || platform === 'win32') {
+    globalShortcut.register('Control+Shift+I', () => {
+      win.webContents.toggleDevTools({mode: 'bottom'});
+    });
+  }
 
   win.on('closed', () => {
     win = null;
+    globalShortcut.unregisterAll();
   });
 
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -39,13 +51,6 @@ const mainMenuTemplate =  [
   {
     label: 'File',
     submenu:[
-      {
-        label: 'DevTools',
-        accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-        click () {
-          win.webContents.toggleDevTools({mode: 'bottom'});
-        }
-      },
       {
         label: 'Quit',
         accelerator:process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
