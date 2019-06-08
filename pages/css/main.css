@@ -1,0 +1,136 @@
+  table {
+    border: 1px solid black;
+  }
+  .table thead th {
+      vertical-align: bottom;
+      border-bottom: 1px solid rgba(0,0,0,0.6);
+  }
+  td {
+    font-size: 12px;
+  }
+  .jumbotron {
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 0px -40px 0px -40px;
+  }
+  .container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-right: 20px;
+  }
+  .navbar {
+    margin-bottom: 10px;
+  }
+  .thfont {
+    font-size: 12px;
+  }
+  .tha {
+    padding-left: 20px;
+  }
+  .thb {
+    float: right;
+    margin-bottom: -1px;
+    margin-top: -1px;
+  }
+  .widtha {
+    width: 88%;
+  }
+  .progress {
+    position: relative;
+    border: 1px solid rgba(140, 140, 140, 1);
+  }
+  .progress span {
+    position: absolute;
+    display: block;
+    width: 100%;
+    color: #aaa;
+  }
+  .navbar .nav-link {
+      padding: 1rem;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .btn:active,
+  .btn.active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
+  .content {
+    display:none;
+  }
+  .preload {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: url(../images/loading.gif) center no-repeat #222222;
+  }
+  .GaugeMeter{
+    Position: Relative;
+    Text-Align: Center;
+    Overflow: Hidden;
+    Cursor: Default;
+  }
+  .GaugeMeter SPAN,
+  .GaugeMeter B{
+    Margin:	0 23%;
+    Width: 54%;
+    Position: Absolute;
+    Text-Align: Center;
+    Display: Inline-Block;
+    Color: RGBa(0,0,0,.8);
+    Font-Weight: 100;
+    Font-Family: "Open Sans", Arial;
+    Overflow: Hidden;
+    White-Space: NoWrap;
+    Text-Overflow: Ellipsis;
+  }
+  .GaugeMeter[data-style="Semi"] B{
+    Margin: 0 10%;
+    Width: 80%;
+  }
+  .GaugeMeter S,
+  .GaugeMeter U{
+    Text-Decoration:None;
+    Font-Size: .60em;
+    Font-Weight: 200;
+    Opacity: .6;
+  }
+  .GaugeMeter B{
+    Color: Black;
+    Font-Weight: 200;
+    Font-Size: 0.85em;
+    Opacity: .8;
+  }
+  .data-a {
+    position: absolute;
+    padding-left: 64px;
+    padding-top: 88px;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    font-weight: 200;
+    opacity: 0.8;
+  }
+  .data-b {
+    position: absolute;
+    padding-left: 213px;
+    padding-top: 88px;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    font-weight: 200;
+    opacity: 0.8;
+  }
+  .center {
+    position:fixed !important;
+    font-size: 9px;
+    bottom: 3px;
+    left:100px;
+    right:100px;
+  }

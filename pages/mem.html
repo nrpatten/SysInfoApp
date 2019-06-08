@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Memory Info</title>
+  <script>
+    delete window.module;
+  </script>
+  <script type="application/javascript" src="scripts/jquery-3.4.1.min.js"></script>
+  <script type="application/javascript" src="scripts/GaugeMeter.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/fontawesome.css">
+</head>
+<body>
+  <div class="preload"></div>
+  <div class="content">
+    <div class="container">
+      <div class="jumbotron">
+        <nav class="navbar navbar-expand navbar-dark">
+          <div id="navbarColor02" style="padding-left: 23px; padding-top:5px; padding-bottom: 5px;">
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'index.html';"><i class="fas fa-desktop"></i> System Stats</button>
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'cpu.html';"><i class="fas fa-microchip"></i> CPU Info</button>
+            <button type="button" class="btn btn-primary active" type="submit" onclick="location.href = '#';"><i class="fas fa-memory"></i> Memory Info</span></button>
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'hdd.html';"><i class="fas fa-hdd"></i> HDD Info</span></button>
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'net.html';"><i class="fas fa-ethernet"></i> Network Info</span></button>
+          </div>
+        </nav>
+        <div class="card border-primary mb-3">
+          <div class="card-body" style="display: flex; width: 100%; margin-top: -20px; margin-bottom: -20px;">
+            <div style="margin-bottom: -36px; margin-top: 36px; margin-left: 114px;" class="GaugeMeter" id="Gauge_1" data-append="%" data-size="200" data-theme="Green-Gold-Red" data-back="RGBa(0,0,0,.1)" data-animationstep=0 data-animate_gauge_colors=true data-animate_text_colors=true data-width="12" data-label="Ram Used" data-style="Arch" data-label_color="#FFF"></div>
+            <div id="mem" style="margin-left: -200px; margin-top: 10px;"></div>
+            <div id="ram" style="margin-top: 10px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer" class="center"></div>
+  </div>
+</body>
+<script>
+$(function() {
+  $(".preload").fadeOut(4000, function() {
+    $(".content").fadeIn(6000);
+  });
+});
+
+let currentVersion = require('../package.json').version.toString();
+let currentDescription = require('../package.json').description.toString();
+let appAuthor = require('../package.json').author.toString();
+
+let divFooter = '';
+divFooter += `
+  <center>
+  <b>${currentDescription} v${currentVersion}</b> By <a href="https://github.com/nrpatten/" target="_blank">${appAuthor}</a> &copy 2019
+  </center>
+`;
+$('#footer').append(divFooter);
+
+$(document).ready(function(){
+
+  const electron = require('electron');
+  let {ipcRenderer} = electron;
+  $(function(e) {
+      e.preventDefault = true;
+      ipcRenderer.send('will-resize', 810, 430);
+  });
+
+  const si = require('systeminformation');
+  var refreshRam = setInterval(() => {
+    si.mem().then(data => {
+      var used = data.used / Math.pow(1024, 3) / Math.round(data.total / Math.pow(1024, 3)) * 100 + 1;
+      var trMEM = '';
+      trMEM += `
+      <b>Ram Used: ${(data.used / Math.pow(1024, 3)).toFixed(1)}GB</b>
+      <b>Total: ${Math.round(data.total / Math.pow(1024, 3))}GB</b>
+      `;
+      $('#mem').empty();
+      $('#mem').append(trMEM);
+      $("#Gauge_1").gaugeMeter({percent: used});
+    }).catch(error => alert(error));
+  }, 1000);
+  // RAM Info
+  si.memLayout().then(data => {
+    var trRAM = '';
+    jQuery.each(data, function(k, item) {
+      trRAM += `
+      <ul>
+        <li><b>Version: ${item.partNum}</b></li>
+        <li><b>Bank: ${item.bank}</b></li>
+        <li><b>Size: ${item.size / Math.pow(1024, 3)}GB</b></li>
+        <li><b>Speed: ${item.clockSpeed * 2}MHz</b></li>
+      </ul>`;
+    });
+    $('#ram').append(trRAM);
+  }).catch(error => alert(error));
+});
+</script>
+</html>
