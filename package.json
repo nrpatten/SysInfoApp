@@ -7,9 +7,9 @@
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder"
   },
-  "author": "NRPatten",
+  "author": "Nathan Patten (NRPatten)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -19,7 +19,6 @@
     "url": "https://github.com/nrpatten/SysInfoApp/issues"
   },
   "homepage": "https://github.com/nrpatten/SysInfoApp",
-  "author": "Nathan Patten (NRPatten)",
   "keywords": [
     "gpu",
     "cpu",
@@ -37,7 +36,7 @@
     "systeminformation": "^4.9.0"
   },
   "build": {
-    "productName": "System Info v1.2",
+    "productName": "System Info v1.3",
     "appId": "com.SysInfoApp.app",
     "win": {
       "asar": true,
@@ -48,8 +47,8 @@
     },
     "files": [
       "main.js",
-      "index.html",
       "package.json",
+      "pages",
       "icons/*",
       "node_modules"
     ],
@@ -61,4 +60,3 @@
     }
   }
 }
-
