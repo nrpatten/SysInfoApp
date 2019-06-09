@@ -18,11 +18,11 @@
       <div class="jumbotron">
         <nav class="navbar navbar-dark">
           <div id="navbarColor02" style="padding-left: 23px; padding-top:5px; padding-bottom: 5px;">
-            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'index.html';"><i class="fas fa-desktop"></i> System Stats</button>
-            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'cpu.html';"><i class="fas fa-microchip"></i> CPU Info</button>
-            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'mem.html';"><i class="fas fa-memory"></i> Memory Info</span></button>
-            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'hdd.html';"><i class="fas fa-hdd"></i> HDD Info</span></button>
-            <button type="button" class="btn btn-primary active" type="submit" onclick="location.href = '#';"><i class="fas fa-ethernet"></i> Network Info</span></button>
+            <button type="button 1" class="btn btn-primary" type="submit" onclick="location.href = 'index.html';"><i class="fas fa-desktop"></i> System Stats</button>
+            <button type="button 2" class="btn btn-primary" type="submit" onclick="location.href = 'cpu.html';"><i class="fas fa-microchip"></i> CPU Info</button>
+            <button type="button 3" class="btn btn-primary" type="submit" onclick="location.href = 'mem.html';"><i class="fas fa-memory"></i> Memory Info</span></button>
+            <button type="button 4" class="btn btn-primary" type="submit" onclick="location.href = 'hdd.html';"><i class="fas fa-hdd"></i> HDD Info</span></button>
+            <button type="button 5" class="btn btn-primary active" type="submit" onclick="location.href = '#';"><i class="fas fa-ethernet"></i> Network Info</span></button>
           </div>
         </nav>
         <div class="card border-primary mb-3">
@@ -71,7 +71,7 @@ $(document).ready(function(){
 
   const si = require('systeminformation');
   const helpers = require('./scripts/helpers');
-  var refreshNet = setInterval(() => {
+  setInterval(() => {
     si.networkStats().then(data => {
       jQuery.each(data, function(k, item) {
         $("#Gauge_1").gaugeMeter({text: helpers.netSpeed(item.rx_bytes).toFixed(1), used: Math.floor(helpers.netSpeed(item.rx_bytes)), total: 1024, showvalue: true, append: helpers.netUnits(item.rx_bytes)});

@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, globalShortcut, ipcMain, ipcRenderer} = require('electron');
+const {app, BrowserWindow, Menu, globalShortcut, ipcMain} = require('electron');
 const os = require('os');
 let win;
 
