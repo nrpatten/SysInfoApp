@@ -9,15 +9,32 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
-  "author": "NRP",
+  "author": "NRPatten",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nrpatten/SysInfoApp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nrpatten/SysInfoApp/issues"
+  },
+  "homepage": "https://github.com/nrpatten/SysInfoApp",
+  "author": "Nathan Patten (NRPatten)",
+  "keywords": [
+    "gpu",
+    "cpu",
+    "ram",
+    "os",
+    "systeminfo",
+    "electron"
+  ],
   "devDependencies": {
     "electron": "^5.0.1",
     "electron-builder": "^20.15.1"
   },
   "optionalDependencies": {},
   "dependencies": {
-    "systeminformation": "^4.3.0"
+    "systeminformation": "^4.9.0"
   },
   "build": {
     "productName": "System Info v1.2",
@@ -44,3 +61,4 @@
     }
   }
 }
+
