@@ -18,11 +18,11 @@
       <div class="jumbotron">
         <nav class="navbar navbar-expand navbar-dark">
           <div id="navbarColor02" style="padding-left: 23px; padding-top:5px; padding-bottom: 5px;">
-            <button type="button 1" class="btn btn-primary" type="submit" onclick="location.href = 'index.html';"><i class="fas fa-desktop"></i> System Stats</button>
-            <button type="button 2" class="btn btn-primary" type="submit" onclick="location.href = 'cpu.html';"><i class="fas fa-microchip"></i> CPU Info</button>
-            <button type="button 3" class="btn btn-primary" type="submit" onclick="location.href = 'mem.html';"><i class="fas fa-memory"></i> Memory Info</span></button>
-            <button type="button 4" class="btn btn-primary active" type="submit" onclick="location.href = '#';"><i class="fas fa-hdd"></i> HDD Info</span></button>
-            <button type="button 5" class="btn btn-primary" type="submit" onclick="location.href = 'net.html';"><i class="fas fa-ethernet"></i> Network Info</span></button>
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'index.html';"><i class="fas fa-desktop"></i> System Stats</button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'cpu.html';"><i class="fas fa-microchip"></i> CPU Info</button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'mem.html';"><i class="fas fa-memory"></i> Memory Info</span></button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary active" type="submit" onclick="location.href = '#';"><i class="fas fa-hdd"></i> HDD Info</span></button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'net.html';"><i class="fas fa-ethernet"></i> Network Info</span></button> <!-- lgtm[js/conflicting-html-attribute] -->
           </div>
         </nav>
         <div id="hdd"></div>

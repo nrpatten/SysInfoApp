@@ -240,7 +240,7 @@
                     m = b.width / 2,
                     v = b.height / 2,
                     _ = 360 * option.percent,
-                    x = (_ * (Math.PI / 180), b.width / 2.5),
+                    x = (_ * (Math.PI / 180), b.width / 2.5), // lgtm[js/useless-expression]
                     k = 2.3 * Math.PI,
                     G = 0,
                     M = 0 === option.animationstep ? c : 0,
