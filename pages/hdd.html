@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>HDD Info</title>
+  <script>
+    delete window.module;
+  </script>
+  <script type="application/javascript" src="scripts/jquery-3.4.1.min.js"></script>
+  <script type="application/javascript" src="scripts/GaugeMeter.js"></script>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/fontawesome.css">
+</head>
+<body>
+  <div class="preload"></div>
+  <div class="content">
+    <div class="container">
+      <div class="jumbotron">
+        <nav class="navbar navbar-expand navbar-dark">
+          <div id="navbarColor02" style="padding-left: 23px; padding-top:5px; padding-bottom: 5px;">
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'index.html';"><i class="fas fa-desktop"></i> System Stats</button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'cpu.html';"><i class="fas fa-microchip"></i> CPU Info</button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'mem.html';"><i class="fas fa-memory"></i> Memory Info</span></button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary active" type="submit" onclick="location.href = '#';"><i class="fas fa-hdd"></i> HDD Info</span></button> <!-- lgtm[js/conflicting-html-attribute] -->
+            <button type="button" class="btn btn-primary" type="submit" onclick="location.href = 'net.html';"><i class="fas fa-ethernet"></i> Network Info</span></button> <!-- lgtm[js/conflicting-html-attribute] -->
+          </div>
+        </nav>
+        <div id="hdd"></div>
+      </div>
+    </div>
+    <div id="footer" class="center"></div>
+  </div>
+</body>
+<script>
+$(function() {
+  $(".preload").fadeOut(4000, function() {
+    $(".content").fadeIn(6000);
+  });
+});
+
+let currentVersion = require('../package.json').version.toString();
+let currentDescription = require('../package.json').description.toString();
+let appAuthor = require('../package.json').author.toString();
+
+let divFooter = '';
+divFooter += `
+  <center>
+  <b>${currentDescription} v${currentVersion}</b> By <a href="https://github.com/nrpatten/" target="_blank">${appAuthor}</a> &copy 2019
+  </center>
+`;
+$('#footer').append(divFooter);
+
+const util = require('../node_modules/systeminformation/lib/util');
+const helpers = require('./scripts/helpers');
+const si = require('systeminformation');
+const fs = require('fs');
+const path = process.env.TMP;
+
+var drive = [];
+si.fsSize().then(data => {
+  for(var i in data) {
+    drive.push({
+      "fs": data[i].fs
+    });
+  }
+}).catch(error => console.log(error));
+
+var result = [];
+si.diskLayout().then(data => {
+  si.fsSize().then(val => {
+    data.sort(function(a, b) {
+      var x = a.interfaceType;
+      var y = b.interfaceType;
+      return x < y ? -1 : x > y ? 1 : 0;
+    });
+    for(var i = 0; i < data.length; i++) {
+      for(var i = 0; i < val.length; i++) {
+        result.push({
+          "name": data[i].name,
+          "type": data[i].type,
+          "interface": data[i].interfaceType,
+          "fs": val[i].fs,
+          "size": val[i].size,
+          "used": val[i].used,
+          "use": val[i].use
+        });
+      }
+    }
+  });
+}).catch(error => console.log(error));
+
+setTimeout(() => {
+  fs.writeFileSync(path + '/' + 'Drives.json', JSON.stringify(result));
+}, 4000);
+
+var info = [];
+setTimeout(() => {
+  fs.readFile(path + '/' + 'Drives.json', 'utf8', function read(err, data) {
+    if(err) throw err;
+    info = (JSON.parse(data));
+  });
+}, 5000);
+
+$(document).ready(function(){
+
+  const electron = require('electron');
+  let {ipcRenderer} = electron;
+  $(function(e) {
+      e.preventDefault = true;
+      ipcRenderer.send('will-resize', 810, 784);
+  });
+  
+  setInterval(() => {
+    $.each(drive, function(k, item) {
+      util.powerShell('Get-Counter -Counter "\\LogicalDisk(' + item.fs + ')\\Disk Write Bytes/sec" | Foreach-Object {$_.CounterSamples.CookedValue}').then(data => {
+        $('#Gauge_' + item.fs.replace(/.$/g,'A') + '').gaugeMeter({text: helpers.hddSpeed(data), used: Math.floor(helpers.hddSpeed(data)), total: 1024, showvalue: true, append: helpers.hddUnits(data)});
+      }).catch(error => alert(error));
+    });
+    $.each(drive, function(k, item) {
+      util.powerShell('Get-Counter -Counter "\\LogicalDisk(' + item.fs + ')\\Disk Read Bytes/sec" | Foreach-Object {$_.CounterSamples.CookedValue}').then(data => {
+        $('#Gauge_' + item.fs.replace(/.$/g,'B') + '').gaugeMeter({text: helpers.hddSpeed(data), used: Math.floor(helpers.hddSpeed(data)), total: 1024, showvalue: true, append: helpers.hddUnits(data)});
+      }).catch(error => alert(error));
+    });
+  }, 2000);
+  setTimeout(() => {
+    for (var i in info) {
+      var divHDD = '';
+      divHDD += `
+      <div class="card border-primary mb-3">
+        <div class="card-body" style="display: flex; width: 100%; margin-top: -20px; margin-bottom: -50px;">
+          <div style="margin-left: -20px;" class="GaugeMeter" id="Gauge_${info[i].fs.replace(/.$/g,'A')}" data-size="200" data-text_size="0.10" data-theme="LightGreen-DarkGreen" data-back="RGBa(0,0,0,.1)" data-animationstep=0 data-animate_gauge_colors=true data-animate_text_colors=true data-width="12" data-label="${info[i].fs} Read/s" data-style="Arch" data-label_color="#FFF"></div>
+          <div style="margin-left: -10px;"class="GaugeMeter" id="Gauge_${info[i].fs.replace(/.$/g,'B')}" data-size="200" data-text_size="0.10" data-theme="LightGreen-DarkGreen" data-back="RGBa(0,0,0,.1)" data-animationstep=0 data-animate_gauge_colors=true data-animate_text_colors=true data-width="12" data-label="${info[i].fs} Write/s" data-style="Arch" data-label_color="#FFF"></div>
+          <ul style="margin-top: 18px;">
+            <li><b>Name: ${info[i].name}</b></li>
+            <li><b>Type: ${info[i].type}</b></li>
+            <li><b>Interface: ${info[i].interface}</b></li>
+            <li><b>Drive: ${info[i].fs}</b></li>
+            <li><b>Size: ${helpers.hddValue(info[i].size)}</b></li>
+            <li><b>Used: ${helpers.hddValue(info[i].used)}  (${(info[i].use).toFixed(1)}%)</b></li>
+          </ul>
+        </div>
+      </div>`;
+      $('#hdd').append(divHDD);
+    }
+  }, 6000);
+});
+</script>
+</html>
