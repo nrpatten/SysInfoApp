@@ -17,6 +17,7 @@ builds:
   image: electronuserland/builder:wine
   stage: build
   artifacts:
+    name: "SysinfoApp_${CI_COMMIT_REF_SLUG}"
     paths:
       - $CI_PROJECT_DIR/build/*.exe
   script:
