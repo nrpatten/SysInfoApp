@@ -7,7 +7,7 @@ Electron System Info App v1.2.0
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/nrpatten/SysInfoApp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/nrpatten/SysInfoApp/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/nrpatten/SysInfoApp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/nrpatten/SysInfoApp/context:javascript)
 
-Prebuilt Portable version @ [This Link](https://github.com/nrpatten/SysInfoApp/releases/tag/v1.2) Auto builds in the works.
+Latest Auto Built Dev Portable Version @ [This Link](https://gitlab.com/nrpatten/SysInfoApp/-/jobs/artifacts/dev/download?job=builds)
 
 ![CPU](pics/CPU.jpg)
 ![RAM](pics/RAM.jpg)
