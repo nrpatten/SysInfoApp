@@ -19,5 +19,5 @@ builds:
   artifacts:
     paths:
       - $CI_PROJECT_DIR/build/*.exe
-  script: 
+  script:
     - npm run dist
