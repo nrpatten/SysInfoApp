@@ -10,7 +10,4 @@ Electron System Info App v1.2.0
 Latest Auto Built Master Portable Version @ [This Link](https://gitlab.com/nrpatten/SysInfoApp/-/jobs/artifacts/master/download?job=builds)
 Latest Auto Built Dev Portable Version @ [This Link](https://gitlab.com/nrpatten/SysInfoApp/-/jobs/artifacts/dev/download?job=builds)
 
-![CPU](pics/CPU.jpg)
-![RAM](pics/RAM.jpg)
-![HDD](pics/HDD.jpg)
-![NET](pics/NET.jpg)
+![SysInfoApp](SysInfoApp.jpg)
