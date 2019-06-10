@@ -7,7 +7,7 @@
     "start": "electron .",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder"
   },
   "author": "Nathan Patten (NRPatten)",
   "license": "MIT",
@@ -36,7 +36,7 @@
     "systeminformation": "^4.9.0"
   },
   "build": {
-    "productName": "System Info v1.3",
+    "productName": "System Info v1.2",
     "appId": "com.SysInfoApp.app",
     "win": {
       "asar": true,
@@ -47,8 +47,8 @@
     },
     "files": [
       "main.js",
+      "index.html",
       "package.json",
-      "pages",
       "icons/*",
       "node_modules"
     ],

@@ -1,5 +1,8 @@
 const {app, BrowserWindow, Menu, globalShortcut} = require('electron');
 const os = require('os');
+const path = require('path');
+const url = require('url');
+const si = require('systeminformation');
 let win;
 
 function createWindow() {
