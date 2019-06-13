@@ -21,4 +21,4 @@ builds:
     paths:
       - $CI_PROJECT_DIR/build/*.exe
   script:
-- npm run dist
+    - npm run dist
