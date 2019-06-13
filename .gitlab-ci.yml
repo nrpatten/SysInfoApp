@@ -1,0 +1,24 @@
+image: node:latest
+
+stages:
+  - modules
+  - build
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: modules
+  script:
+    - npm install
+
+builds:
+  image: electronuserland/builder:wine
+  stage: build
+  artifacts:
+    name: "SysinfoApp_${CI_COMMIT_REF_SLUG}"
+    paths:
+      - $CI_PROJECT_DIR/build/*.exe
+  script:
+- npm run dist
