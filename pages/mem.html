@@ -34,7 +34,6 @@
         </div>
       </div>
     </div>
-    <div id="footer" class="center"></div>
   </div>
 </body>
 <script>
@@ -43,18 +42,6 @@ $(function() {
     $(".content").fadeIn(6000);
   });
 });
-
-let currentVersion = require('../package.json').version.toString();
-let currentDescription = require('../package.json').description.toString();
-let appAuthor = require('../package.json').author.toString();
-
-let divFooter = '';
-divFooter += `
-  <center>
-  <b>${currentDescription} v${currentVersion}</b> By <a href="https://github.com/nrpatten/" target="_blank">${appAuthor}</a> &copy 2019
-  </center>
-`;
-$('#footer').append(divFooter);
 
 $(document).ready(function(){
 

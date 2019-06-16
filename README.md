@@ -10,6 +10,7 @@ Electron System Info App v1.3.0
 ### Latest Auto Built Master Portable Version @ [This Link](https://sysinfoapp.blob.core.windows.net/master/SysInfoApp.exe)
 
 ### Latest Auto Built Original Portable Version @ [This Link](https://sysinfoapp.blob.core.windows.net/original/SysInfoApp.exe)
+![MAIN](pics/MAIN.jpg)
 ![CPU](pics/CPU.jpg)
 ![RAM](pics/RAM.jpg)
 ![HDD](pics/HDD.jpg)
