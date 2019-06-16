@@ -146,8 +146,10 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th scope="col">Display</th>
+            <th scope="col">Display Brand</th>
+            <th scope="col">Model</th>
             <th scope="col">Resolution</th>
+            <th scope="col">Refesh Rate</th>
           </tr>
         </thead>
         <tbody id="dis">
@@ -257,8 +259,10 @@ si.getAllData().then(data => {
   jQuery.each(data.graphics.displays, function(k, item) {
     trDIS += `
     <tr class="table-active">
+      <td><b>${item.vendor}</b></td>
       <td><b>${item.model}</b></td>
       <td><b>${item.resolutionx + "x" + item.resolutiony + "@" + item.pixeldepth}</b></td>
+      <td><b>${item.currentRefreshRate}Hz</b></td>
     </tr>`;
   });
   jQuery('#mobo').append(trMOBO);
@@ -290,13 +294,14 @@ var refreshLoad = setInterval(() => {
 // Ram Usage
 var refreshMem = setInterval(() => {
   si.mem().then(data => {
+    let used = (data.used / Math.pow(1024, 3) / Math.round(data.total / Math.pow(1024, 3)) * 100).toFixed(0);
     var trMEM = '';
     trMEM += `
     Ram Used: ${(data.used / Math.pow(1024, 3)).toFixed(0)}GB
     Total: ${Math.round(data.total / Math.pow(1024, 3))}GB
     <div class="progress">
-      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="${(data.used / Math.pow(1024, 3)).toFixed(0)}" aria-valuemin="0" aria-valuemax="100" style="width: ${(data.used / Math.pow(1024, 3)).toFixed(0)}%;">
-        <span>Used: ${(data.used / Math.pow(1024, 3) / Math.round(data.total / Math.pow(1024, 3)) * 100).toFixed(0)}%</span>
+      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="${used}" aria-valuemin="0" aria-valuemax="100" style="width: ${used}%;">
+        <span>Used: ${used}%</span>
       </div>
     </div>`;
     jQuery('#mem').empty();
